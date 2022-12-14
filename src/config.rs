@@ -15,6 +15,7 @@ pub struct Chain {
     pub mnemonic: String,
     pub account_number: u64,
     pub sequence_number: u64,
+    pub rpc: String,
 }
 
 impl Default for Config {

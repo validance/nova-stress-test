@@ -5,11 +5,10 @@ use nova_load_test::config::Config;
 use nova_load_test::key::Account;
 use nova_load_test::tx::broadcast;
 use std::str::FromStr;
-use tendermint_rpc::HttpClient;
+use tendermint_rpc::{HttpClient, Url};
 
 #[tokio::main]
 async fn main() {
-    let client = HttpClient::new("http://localhost:26657").unwrap();
 
     let chain_config = Config::default();
     let target = chain_config.chains.get(0).unwrap();
@@ -20,6 +19,8 @@ async fn main() {
         target.account_number,
     )
     .unwrap();
+
+    let client = HttpClient::new(Url::from_str(&target.rpc).unwrap()).unwrap();
 
     // TODO: Create another method to build txs
     let any_tx = cosmrs::bank::MsgSend {

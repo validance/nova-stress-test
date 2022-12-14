@@ -4,7 +4,8 @@ prefix = "cosmos"
 denom = "uatom"
 mnemonic = "citizen delay spoon slender reward bottom reveal champion machine congress convince ridge practice table solid now snake pepper debris barrel crime salon course pottery"
 account_number = 6
-sequence_number = 7
+sequence_number = 8
+rpc = "http://localhost:26657"
 
 [[chains]]
 id = "juno"
@@ -13,3 +14,4 @@ denom = "ujuno"
 mnemonic = "pact flee budget wise carpet tape season jaguar verb awkward light clerk sword camera muscle joke detail early vital sausage loyal usage ill young"
 account_number = 1
 sequence_number = 1
+rpc = "http://localhost:26657"
