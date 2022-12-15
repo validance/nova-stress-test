@@ -6,10 +6,16 @@ use futures::{FutureExt, TryFutureExt};
 use std::future::Future;
 use std::str::FromStr;
 use std::sync::Arc;
+use std::time::Duration;
 use tendermint_rpc::endpoint::broadcast::tx_async::Response;
 use tendermint_rpc::{Client, HttpClient, HttpClientUrl, Url};
 use tokio::runtime::{Handle, Runtime};
 use tokio::task::JoinHandle;
+
+fn spawn_task(host_chain_config: &HostChain) {
+
+
+}
 
 fn get_host_chain_config<'a>(config: &'a Config, chain_id: &'a str) -> Option<&'a HostChain> {
     config.hosts.iter().find(|chain| chain.id.eq(chain_id))
@@ -25,7 +31,7 @@ pub fn spawn_workers(rt: Runtime) {
 
         let mut counter = nova_chain_config.sequence_number;
 
-        for _ in 0..10 {
+        for _ in 0..host_chain_config.total_tx {
             let deposit_task = nova::tx::deposit(
                 &nova_client,
                 &account,
@@ -39,10 +45,11 @@ pub fn spawn_workers(rt: Runtime) {
                 "1",
             );
             let res = rt.block_on(deposit_task).unwrap();
-            println!("{:?}", res);
+            println!("{}: {}", &host_chain_config.id, res.hash.to_string());
 
             counter += 1;
+            std::thread::sleep(Duration::from_millis(host_chain_config.interval))
         }
-        println!("{counter}");
+        println!("next sequence: {counter}");
     }
 }
