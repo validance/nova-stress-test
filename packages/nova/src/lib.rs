@@ -31,5 +31,15 @@ pub mod nova {
 }
 
 pub trait AnyMsg {
-    fn try_to_any(&self, type_url: &str) -> Result<Any, Error>;
+    fn try_to_any(&self, type_url: &str) -> Result<Any, Error>
+    where
+        Self: prost::Message + Sized,
+    {
+        let mut buf = Vec::new();
+        prost::Message::encode(self, &mut buf).map_err(Error::ProstEncodeError)?;
+        Ok(Any {
+            type_url: type_url.to_string(),
+            value: buf,
+        })
+    }
 }
