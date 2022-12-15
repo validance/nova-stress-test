@@ -16,6 +16,15 @@ features = ["prost-derive"]
 [dependencies.prost-build]
 version = "0.11.4"
 
+[dependencies.tokio]
+version = "1.0.0"
+features = ["full"]
+
+[dependencies.tendermint-rpc]
+version = "0.28.0"
+features = ["http-client"]
+
 [dependencies]
 cosmos = {path = "../packages/cosmos"}
 nova = {path = "../packages/nova"}
+futures = "0.3.25"

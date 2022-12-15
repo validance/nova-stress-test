@@ -9,7 +9,8 @@ use cosmos::Error;
 use cosmrs::tendermint::block::Height;
 use cosmrs::tx::Body;
 use prost_types::Any;
-use tendermint_rpc::endpoint::broadcast::tx_async::Response;
+// use tendermint_rpc::endpoint::broadcast::tx_async::Response;
+use tendermint_rpc::endpoint::broadcast::tx_commit::Response;
 use tendermint_rpc::HttpClient;
 
 async fn sign_and_broadcast(
@@ -23,7 +24,7 @@ async fn sign_and_broadcast(
 ) -> Result<Response, Error> {
     let signed_tx = account.sign(
         chain.id.parse().map_err(Error::TendermintError)?,
-        Body::new(msg, "", Height::from(chain.target_height)),
+        Body::new(msg, "", Height::from(chain.timeout_height)),
         sequence_number,
         fee_amount,
         gas_limit,
@@ -51,12 +52,12 @@ pub async fn deposit(
         depositor,
         claimer,
         amount: Some(Coin {
-            denom: chain.denom.clone(),
+            denom: "ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2".to_string(),
             amount: amount.to_string(),
         }),
     };
 
-    let any_msg = msg_deposit.try_to_any("/nova.gal.v1.Msg/Deposit")?;
+    let any_msg = msg_deposit.try_to_any("/nova.gal.v1.MsgDeposit")?;
     sign_and_broadcast(
         client,
         vec![any_msg],
@@ -90,7 +91,7 @@ pub async fn pending_undelegate(
         }),
     };
 
-    let any_msg = msg_pending_undelegate.try_to_any("/nova.gal.v1.Msg/PendingUndelegate")?;
+    let any_msg = msg_pending_undelegate.try_to_any("/nova.gal.v1.MsgPendingUndelegate")?;
     sign_and_broadcast(
         client,
         vec![any_msg],
@@ -117,7 +118,7 @@ pub async fn withdraw(
         withdrawer,
     };
 
-    let any_msg = msg_withdraw.try_to_any("/nova.gal.v1.Msg/Withdraw")?;
+    let any_msg = msg_withdraw.try_to_any("/nova.gal.v1.MsgWithdraw")?;
     sign_and_broadcast(
         client,
         vec![any_msg],
@@ -144,7 +145,7 @@ pub async fn claim_sn_asset(
         claimer,
     };
 
-    let any_msg = msg_claim_sn_asset.try_to_any("/nova.gal.v1.Msg/ClaimSnAsset")?;
+    let any_msg = msg_claim_sn_asset.try_to_any("/nova.gal.v1.MsgClaimSnAsset")?;
     sign_and_broadcast(
         client,
         vec![any_msg],

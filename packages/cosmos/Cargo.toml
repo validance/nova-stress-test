@@ -10,7 +10,7 @@ version = "0.28.0"
 features = ["http-client"]
 
 [dependencies.tokio]
-version = "1.23.0"
+version = "1.0.0"
 features = ["full"]
 
 [dependencies.cosmrs]

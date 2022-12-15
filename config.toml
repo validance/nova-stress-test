@@ -7,13 +7,19 @@ account_number = 6
 sequence_number = 8
 rpc = "http://localhost:26657"
 zone_id = "gaia"
+interval = 1000
+total_tx = 1000
+timeout_height = 10000
 
 [[chains]]
-id = "juno"
-prefix = "juno"
-denom = "ujuno"
-mnemonic = "pact flee budget wise carpet tape season jaguar verb awkward light clerk sword camera muscle joke detail early vital sausage loyal usage ill young"
-account_number = 1
-sequence_number = 1
-rpc = "http://localhost:26657"
-zone_id = "juno"
+id = "nova"
+prefix = "nova"
+denom = "unova"
+mnemonic = "reopen throw concert garment wash slab jump company habit father below stage float attitude achieve net charge bulb mouse mind fat net hello vague"
+account_number = 6
+sequence_number = 6
+rpc = "http://dev-supernova-l4.dev-supernova.xyz:26657"
+zone_id = "gaia"
+interval = 1000
+total_tx = 1000
+timeout_height = 10000
