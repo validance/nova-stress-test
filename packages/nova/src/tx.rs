@@ -9,8 +9,7 @@ use cosmos::Error;
 use cosmrs::tendermint::block::Height;
 use cosmrs::tx::Body;
 use prost_types::Any;
-// use tendermint_rpc::endpoint::broadcast::tx_async::Response;
-use tendermint_rpc::endpoint::broadcast::tx_commit::Response;
+use tendermint_rpc::endpoint::broadcast::tx_async::Response;
 use tendermint_rpc::HttpClient;
 
 async fn sign_and_broadcast(

@@ -22,20 +22,25 @@ pub fn spawn_workers(rt: Runtime) {
         let nova_client = HttpClient::new(Url::from_str(&nova_config.rpc).unwrap()).unwrap();
         let account = Account::new(&nova_config).unwrap();
 
-        for i in 0..=0 {
-            let nova_task = nova::tx::deposit(
+        let mut counter = nova_config.sequence_number;
+
+        for _ in 0..10 {
+            let deposit_task = nova::tx::deposit(
                 &nova_client,
                 &account,
                 &nova_config,
                 100000_u128,
                 1000000_u64,
-                nova_config.sequence_number + i,
+                counter,
                 account.get_account_id().unwrap().to_string(),
                 account.get_account_id().unwrap().to_string(),
-                "1000",
+                "1",
             );
-            let res = rt.block_on(nova_task).unwrap();
+            let res = rt.block_on(deposit_task).unwrap();
             println!("{:?}", res);
+
+            counter += 1;
         }
+        println!("{counter}");
     }
 }
