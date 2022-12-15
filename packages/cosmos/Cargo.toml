@@ -1,0 +1,40 @@
+[package]
+name = "cosmos"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies.tendermint-rpc]
+version = "0.28.0"
+features = ["http-client"]
+
+[dependencies.tokio]
+version = "1.23.0"
+features = ["full"]
+
+[dependencies.cosmrs]
+version = "0.11.0"
+
+[dependencies.serde]
+version = "1.0.150"
+features = ["derive"]
+
+[dependencies.tendermint]
+version = "0.28.0"
+
+[dependencies.tiny-bip39]
+version = "1.0.0"
+default-features = false
+
+[dependencies.hdpath]
+version = "0.6.1"
+features = ["with-bitcoin"]
+
+[dependencies.clap]
+version = "4.0.29"
+features = ["derive"]
+
+[dependencies]
+anyhow = "1.0.66"
+toml = "0.5.10"

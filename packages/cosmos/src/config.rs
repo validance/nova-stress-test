@@ -16,6 +16,8 @@ pub struct Chain {
     pub account_number: u64,
     pub sequence_number: u64,
     pub rpc: String,
+    pub target_height: u32,
+    pub zone_id: String,
 }
 
 impl Default for Config {

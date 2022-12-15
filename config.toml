@@ -6,6 +6,7 @@ mnemonic = "citizen delay spoon slender reward bottom reveal champion machine co
 account_number = 6
 sequence_number = 8
 rpc = "http://localhost:26657"
+zone_id = "gaia"
 
 [[chains]]
 id = "juno"
@@ -15,3 +16,4 @@ mnemonic = "pact flee budget wise carpet tape season jaguar verb awkward light c
 account_number = 1
 sequence_number = 1
 rpc = "http://localhost:26657"
+zone_id = "juno"
