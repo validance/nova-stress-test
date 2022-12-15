@@ -4,11 +4,12 @@ use toml;
 
 #[derive(Clone, Debug, Deserialize)]
 pub struct Config {
-    pub chains: Vec<Chain>,
+    pub nova: NovaChain,
+    pub hosts: Vec<HostChain>,
 }
 
 #[derive(Clone, Debug, Deserialize)]
-pub struct Chain {
+pub struct NovaChain {
     pub id: String,
     pub prefix: String,
     pub denom: String,
@@ -17,7 +18,12 @@ pub struct Chain {
     pub sequence_number: u64,
     pub rpc: String,
     pub timeout_height: u32,
-    pub zone_id: String,
+}
+
+#[derive(Clone, Debug, Deserialize)]
+pub struct HostChain {
+    pub id: String,
+    pub ibc_denom: String,
     pub interval: u64,
     pub total_tx: u64,
 }

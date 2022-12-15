@@ -2,7 +2,7 @@ use crate::cosmos::base::v1beta1::Coin;
 use crate::nova::gal::v1::{MsgClaimSnAsset, MsgDeposit, MsgPendingUndelegate, MsgWithdraw};
 use crate::AnyMsg;
 
-use cosmos::config::Chain;
+use cosmos::config::{HostChain, NovaChain};
 use cosmos::key::Account;
 use cosmos::tx::broadcast as tx_broadcast;
 use cosmos::Error;
@@ -16,14 +16,14 @@ async fn sign_and_broadcast(
     client: &HttpClient,
     msg: Vec<Any>,
     account: &Account,
-    chain: &Chain,
+    nova_chain: &NovaChain,
     sequence_number: u64,
     fee_amount: u128,
     gas_limit: u64,
 ) -> Result<Response, Error> {
     let signed_tx = account.sign(
-        chain.id.parse().map_err(Error::TendermintError)?,
-        Body::new(msg, "", Height::from(chain.timeout_height)),
+        nova_chain.id.parse().map_err(Error::TendermintError)?,
+        Body::new(msg, "", Height::from(nova_chain.timeout_height)),
         sequence_number,
         fee_amount,
         gas_limit,
@@ -38,7 +38,8 @@ async fn sign_and_broadcast(
 pub async fn deposit(
     client: &HttpClient,
     account: &Account,
-    chain: &Chain,
+    host_chain: &HostChain,
+    nova_chain: &NovaChain,
     fee_amount: u128,
     gas_limit: u64,
     sequence_number: u64,
@@ -47,11 +48,11 @@ pub async fn deposit(
     amount: impl ToString,
 ) -> Result<Response, Error> {
     let msg_deposit = MsgDeposit {
-        zone_id: chain.zone_id.clone(),
+        zone_id: host_chain.id.clone(),
         depositor,
         claimer,
         amount: Some(Coin {
-            denom: "ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2".to_string(),
+            denom: host_chain.ibc_denom.to_string(),
             amount: amount.to_string(),
         }),
     };
@@ -61,7 +62,7 @@ pub async fn deposit(
         client,
         vec![any_msg],
         account,
-        chain,
+        nova_chain,
         sequence_number,
         fee_amount,
         gas_limit,
@@ -72,7 +73,8 @@ pub async fn deposit(
 pub async fn pending_undelegate(
     client: &HttpClient,
     account: &Account,
-    chain: &Chain,
+    host_chain: &HostChain,
+    nova_chain: &NovaChain,
     fee_amount: u128,
     gas_limit: u64,
     sequence_number: u64,
@@ -81,11 +83,11 @@ pub async fn pending_undelegate(
     amount: impl ToString,
 ) -> Result<Response, Error> {
     let msg_pending_undelegate = MsgPendingUndelegate {
-        zone_id: chain.zone_id.clone(),
+        zone_id: host_chain.id.clone(),
         delegator,
         withdrawer,
         amount: Some(Coin {
-            denom: chain.denom.clone(),
+            denom: host_chain.ibc_denom.clone(),
             amount: amount.to_string(),
         }),
     };
@@ -95,7 +97,7 @@ pub async fn pending_undelegate(
         client,
         vec![any_msg],
         account,
-        chain,
+        nova_chain,
         sequence_number,
         fee_amount,
         gas_limit,
@@ -106,14 +108,15 @@ pub async fn pending_undelegate(
 pub async fn withdraw(
     client: &HttpClient,
     account: &Account,
-    chain: &Chain,
+    host_chain: &HostChain,
+    nova_chain: &NovaChain,
     fee_amount: u128,
     gas_limit: u64,
     sequence_number: u64,
     withdrawer: String,
 ) -> Result<Response, Error> {
     let msg_withdraw = MsgWithdraw {
-        zone_id: chain.zone_id.clone(),
+        zone_id: host_chain.id.clone(),
         withdrawer,
     };
 
@@ -122,7 +125,7 @@ pub async fn withdraw(
         client,
         vec![any_msg],
         account,
-        chain,
+        nova_chain,
         sequence_number,
         fee_amount,
         gas_limit,
@@ -133,14 +136,15 @@ pub async fn withdraw(
 pub async fn claim_sn_asset(
     client: &HttpClient,
     account: &Account,
-    chain: &Chain,
+    host_chain: &HostChain,
+    nova_chain: &NovaChain,
     fee_amount: u128,
     gas_limit: u64,
     sequence_number: u64,
     claimer: String,
 ) -> Result<Response, Error> {
     let msg_claim_sn_asset = MsgClaimSnAsset {
-        zone_id: chain.zone_id.clone(),
+        zone_id: host_chain.id.clone(),
         claimer,
     };
 
@@ -149,7 +153,7 @@ pub async fn claim_sn_asset(
         client,
         vec![any_msg],
         account,
-        chain,
+        nova_chain,
         sequence_number,
         fee_amount,
         gas_limit,

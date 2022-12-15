@@ -1,6 +1,6 @@
 use crate::Error;
 
-use crate::config::Chain;
+use crate::config::{HostChain, NovaChain};
 use bip39::{Language, Mnemonic, Seed};
 use cosmrs::bip32::DerivationPath;
 use cosmrs::crypto::secp256k1::SigningKey;
@@ -17,7 +17,7 @@ pub struct Account {
 }
 
 impl Account {
-    pub fn new(chain_config: &Chain) -> Result<Self, Error> {
+    pub fn new(chain_config: &NovaChain) -> Result<Self, Error> {
         let mnemonic = Mnemonic::from_phrase(&chain_config.mnemonic, Language::English)
             .map_err(Error::AnyError)?;
         let seed = Seed::new(&mnemonic, "");
