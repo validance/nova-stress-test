@@ -18,6 +18,8 @@ pub struct NovaChain {
     pub sequence_number: u64,
     pub rpc: String,
     pub timeout_height: u32,
+    pub fee_amount: u64,
+    pub gas_limit: u64
 }
 
 #[derive(Clone, Debug, Deserialize)]

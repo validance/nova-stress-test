@@ -40,8 +40,6 @@ pub async fn deposit(
     account: &Account,
     host_chain: &HostChain,
     nova_chain: &NovaChain,
-    fee_amount: u128,
-    gas_limit: u64,
     sequence_number: u64,
     depositor: String,
     claimer: String,
@@ -64,8 +62,8 @@ pub async fn deposit(
         account,
         nova_chain,
         sequence_number,
-        fee_amount,
-        gas_limit,
+        nova_chain.fee_amount.into(),
+        nova_chain.gas_limit,
     )
     .await
 }

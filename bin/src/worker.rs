@@ -19,8 +19,6 @@ fn spawn_task(
             account,
             host_chain_config,
             nova_chain_config,
-            100000_u128,
-            1000000_u64,
             *counter,
             account.get_account_id().unwrap().to_string(),
             account.get_account_id().unwrap().to_string(),
