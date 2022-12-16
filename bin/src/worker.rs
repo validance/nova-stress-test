@@ -27,7 +27,10 @@ fn spawn_task(
             "1",
         );
         let res = rt.block_on(deposit_task).unwrap();
-        println!("{}: {} {}/{}", &host_chain_config.id, res.hash, tx_number, total_tx);
+        println!(
+            "{}: {} {}/{}",
+            &host_chain_config.id, res.hash, tx_number, total_tx
+        );
 
         *sequence_number += 1;
         *tx_number += 1;
@@ -38,7 +41,7 @@ fn spawn_task(
 pub fn spawn_workers(config_dir: Option<String>, rt: Runtime) {
     let config = match config_dir {
         Some(config_dir) => Config::new(&config_dir),
-        None => Config::default()
+        None => Config::default(),
     };
 
     let nova_chain_config = &config.nova;
@@ -47,9 +50,14 @@ pub fn spawn_workers(config_dir: Option<String>, rt: Runtime) {
     let mut tx_number: u64 = 1;
 
     let nova_client = HttpClient::new(Url::from_str(&nova_chain_config.rpc).unwrap()).unwrap();
-    let account = Account::new(nova_chain_config).unwrap();
+    let mut account = Account::new(nova_chain_config).unwrap();
 
-    let mut sequence_number = nova_chain_config.sequence_number;
+    let account_numbers = rt
+        .block_on(cosmos::query::account(&account, &nova_chain_config.rest))
+        .unwrap();
+    account.set_account_number(account_numbers.account_number.parse().unwrap());
+
+    let mut sequence_number: u64 = account_numbers.sequence.parse().unwrap();
 
     config.hosts.iter().for_each(|host_chain_config| {
         spawn_task(
@@ -60,7 +68,7 @@ pub fn spawn_workers(config_dir: Option<String>, rt: Runtime) {
             host_chain_config,
             &mut sequence_number,
             total_tx,
-            &mut tx_number
+            &mut tx_number,
         );
     });
 

@@ -2,6 +2,7 @@ use cosmrs::proto::prost;
 
 pub mod config;
 pub mod key;
+pub mod query;
 pub mod tx;
 
 #[derive(Debug)]
@@ -12,4 +13,6 @@ pub enum Error {
     TendermintError(cosmrs::tendermint::Error),
     TendermintRpcError(tendermint_rpc::Error),
     ProstEncodeError(prost::EncodeError),
+    ReqwestError(reqwest::Error),
+    ParseIntError(std::num::ParseIntError),
 }

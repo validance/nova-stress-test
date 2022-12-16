@@ -14,7 +14,7 @@ pub enum Commands {
     Start {
         /// set config file
         #[arg(short, long)]
-        config: Option<String>
+        config: Option<String>,
     },
 
     /// compile proto

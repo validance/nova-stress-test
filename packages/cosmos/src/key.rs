@@ -29,8 +29,12 @@ impl Account {
             signing_key,
             prefix: chain_config.prefix.to_string(),
             denom: chain_config.denom.to_string(),
-            account_number: chain_config.account_number,
+            account_number: 0,
         })
+    }
+
+    pub fn set_account_number(&mut self, account_number: u64) {
+        self.account_number = account_number;
     }
 
     pub fn sign(
