@@ -2,6 +2,7 @@ use crate::cosmos::base::v1beta1::Coin;
 use crate::nova::gal::v1::{MsgClaimSnAsset, MsgDeposit, MsgPendingUndelegate, MsgWithdraw};
 use crate::AnyMsg;
 
+use chrono::Utc;
 use cosmos::config::{HostChain, NovaChain};
 use cosmos::key::Account;
 use cosmos::tx::broadcast as tx_broadcast;
@@ -154,7 +155,45 @@ pub async fn claim_sn_asset(
     .await
 }
 
+pub async fn ibc_transfer(
+    client: &HttpClient,
+    account: &Account,
+    host_chain: &HostChain,
+    nova_chain: &NovaChain,
+    sequence_number: u64,
+) -> Result<Response, Error> {
+    let msg_transfer = ibc_proto::ibc::applications::transfer::v1::MsgTransfer {
+        source_port: host_chain.transfer_source_port.to_string(),
+        source_channel: host_chain.transfer_channel.to_string(),
+        token: Some(ibc_proto::cosmos::base::v1beta1::Coin {
+            denom: host_chain.ibc_denom.to_string(),
+            amount: "1".to_string(),
+        }),
+        sender: account.get_account_id()?.to_string(),
+        receiver: host_chain.host_address.to_string(),
+        timeout_height: None,
+        timeout_timestamp: Utc::now()
+            .timestamp_nanos()
+            .try_into()
+            .map_err(Error::TryFromIntError)?,
+    };
+
+    let any_msg = msg_transfer.try_to_any("/ibc.applications.transfer.v1.MsgTransfer")?;
+
+    sign_and_broadcast(
+        client,
+        vec![any_msg],
+        account,
+        nova_chain,
+        sequence_number,
+        nova_chain.fee_amount.into(),
+        nova_chain.gas_limit,
+    )
+    .await
+}
+
 impl AnyMsg for MsgDeposit {}
 impl AnyMsg for MsgPendingUndelegate {}
 impl AnyMsg for MsgWithdraw {}
 impl AnyMsg for MsgClaimSnAsset {}
+impl AnyMsg for ibc_proto::ibc::applications::transfer::v1::MsgTransfer {}

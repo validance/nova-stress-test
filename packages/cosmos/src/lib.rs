@@ -15,4 +15,5 @@ pub enum Error {
     ProstEncodeError(prost::EncodeError),
     ReqwestError(reqwest::Error),
     ParseIntError(std::num::ParseIntError),
+    TryFromIntError(std::num::TryFromIntError),
 }

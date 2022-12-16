@@ -28,6 +28,9 @@ pub struct HostChain {
     pub sn_denom: String,
     pub interval: u64,
     pub num_per_tx: u64,
+    pub transfer_source_port: String,
+    pub transfer_channel: String,
+    pub host_address: String,
 }
 
 impl Default for Config {

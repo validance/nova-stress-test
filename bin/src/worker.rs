@@ -5,6 +5,8 @@ use std::time::Duration;
 use tendermint_rpc::{HttpClient, Url};
 use tokio::runtime::Runtime;
 
+const TX_TYPES: u64 = 2;
+
 fn fallback(
     chain_id: &str,
     hash: &str,
@@ -53,18 +55,38 @@ fn spawn_task(
             host_chain_config.interval,
         );
 
-        let pending_undelegate_task = nova::tx::pending_undelegate(
+        // let pending_undelegate_task = nova::tx::pending_undelegate(
+        //     nova_client,
+        //     account,
+        //     host_chain_config,
+        //     nova_chain_config,
+        //     *sequence_number,
+        //     account.get_account_id().unwrap().to_string(),
+        //     account.get_account_id().unwrap().to_string(),
+        //     "1000000000000",
+        // );
+        //
+        // let res = rt.block_on(pending_undelegate_task).unwrap();
+        //
+        // fallback(
+        //     &host_chain_config.id,
+        //     &res.hash.to_string(),
+        //     &res.deliver_tx.log,
+        //     sequence_number,
+        //     tx_number,
+        //     total_tx,
+        //     host_chain_config.interval,
+        // );
+
+        let ibc_transfer_task = nova::tx::ibc_transfer(
             nova_client,
             account,
             host_chain_config,
             nova_chain_config,
             *sequence_number,
-            account.get_account_id().unwrap().to_string(),
-            account.get_account_id().unwrap().to_string(),
-            "1",
         );
 
-        let res = rt.block_on(pending_undelegate_task).unwrap();
+        let res = rt.block_on(ibc_transfer_task).unwrap();
 
         fallback(
             &host_chain_config.id,
@@ -106,7 +128,7 @@ pub fn spawn_workers(config_dir: Option<String>, rt: Runtime) {
             nova_chain_config,
             host_chain_config,
             &mut sequence_number,
-            total_tx * 2,
+            total_tx * TX_TYPES,
             &mut tx_number,
         );
     });

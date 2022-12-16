@@ -22,3 +22,5 @@ features = ["http-client"]
 [dependencies]
 clap = "4.0.29"
 cosmos = {path = "../cosmos"}
+ibc-proto = "0.24.0"
+chrono = "0.4.23"
