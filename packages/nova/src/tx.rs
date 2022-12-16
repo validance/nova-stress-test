@@ -53,6 +53,7 @@ pub async fn deposit(
             denom: host_chain.ibc_denom.to_string(),
             amount: amount.to_string(),
         }),
+        timeout_timestamp: 10,
     };
 
     let any_msg = msg_deposit.try_to_any("/nova.gal.v1.MsgDeposit")?;

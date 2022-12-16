@@ -42,6 +42,17 @@ fn spawn_task(
             "1",
         );
 
+        let res = rt.block_on(deposit_task).unwrap();
+
+        fallback(
+            &host_chain_config.id,
+            &res.hash.to_string(),
+            sequence_number,
+            tx_number,
+            total_tx,
+            host_chain_config.interval,
+        );
+
         let pending_undelegate_task = nova::tx::pending_undelegate(
             nova_client,
             account,
@@ -53,7 +64,7 @@ fn spawn_task(
             "1",
         );
 
-        let res = rt.block_on(deposit_task).unwrap();
+        let res = rt.block_on(pending_undelegate_task).unwrap();
 
         fallback(
             &host_chain_config.id,
@@ -95,7 +106,7 @@ pub fn spawn_workers(config_dir: Option<String>, rt: Runtime) {
             nova_chain_config,
             host_chain_config,
             &mut sequence_number,
-            total_tx,
+            total_tx * 2,
             &mut tx_number,
         );
     });

@@ -10,6 +10,8 @@ pub struct MsgDeposit {
     pub claimer: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "4")]
     pub amount: ::core::option::Option<super::super::super::cosmos::base::v1beta1::Coin>,
+    #[prost(uint64, tag = "5")]
+    pub timeout_timestamp: u64,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
