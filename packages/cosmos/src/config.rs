@@ -25,8 +25,9 @@ pub struct NovaChain {
 pub struct HostChain {
     pub id: String,
     pub ibc_denom: String,
+    pub sn_denom: String,
     pub interval: u64,
-    pub total_tx: u64,
+    pub num_per_tx: u64,
 }
 
 impl Default for Config {

@@ -12,12 +12,14 @@ gas_limit = 1000000
 [[hosts]]
 id = "gaia"
 ibc_denom = "ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2"
+sn_denom = "snuatom"
 interval = 5
-total_tx = 10
+num_per_tx = 10
 
 [[hosts]]
 id = "juno"
 ibc_denom = "ibc/4CD525F166D32B0132C095F353F4C6F033B0FF5C49141470D1EFDA1D63303D04"
+sn_denom = "snujuno"
 interval = 5
-total_tx = 10
+num_per_tx = 10
 

@@ -73,8 +73,6 @@ pub async fn pending_undelegate(
     account: &Account,
     host_chain: &HostChain,
     nova_chain: &NovaChain,
-    fee_amount: u128,
-    gas_limit: u64,
     sequence_number: u64,
     delegator: String,
     withdrawer: String,
@@ -85,7 +83,7 @@ pub async fn pending_undelegate(
         delegator,
         withdrawer,
         amount: Some(Coin {
-            denom: host_chain.ibc_denom.clone(),
+            denom: host_chain.sn_denom.clone(),
             amount: amount.to_string(),
         }),
     };
@@ -97,8 +95,8 @@ pub async fn pending_undelegate(
         account,
         nova_chain,
         sequence_number,
-        fee_amount,
-        gas_limit,
+        nova_chain.fee_amount.into(),
+        nova_chain.gas_limit,
     )
     .await
 }
@@ -108,8 +106,6 @@ pub async fn withdraw(
     account: &Account,
     host_chain: &HostChain,
     nova_chain: &NovaChain,
-    fee_amount: u128,
-    gas_limit: u64,
     sequence_number: u64,
     withdrawer: String,
 ) -> Result<Response, Error> {
@@ -125,8 +121,8 @@ pub async fn withdraw(
         account,
         nova_chain,
         sequence_number,
-        fee_amount,
-        gas_limit,
+        nova_chain.fee_amount.into(),
+        nova_chain.gas_limit,
     )
     .await
 }
@@ -136,8 +132,6 @@ pub async fn claim_sn_asset(
     account: &Account,
     host_chain: &HostChain,
     nova_chain: &NovaChain,
-    fee_amount: u128,
-    gas_limit: u64,
     sequence_number: u64,
     claimer: String,
 ) -> Result<Response, Error> {
@@ -153,8 +147,8 @@ pub async fn claim_sn_asset(
         account,
         nova_chain,
         sequence_number,
-        fee_amount,
-        gas_limit,
+        nova_chain.fee_amount.into(),
+        nova_chain.gas_limit,
     )
     .await
 }
