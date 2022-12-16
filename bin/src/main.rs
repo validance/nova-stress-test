@@ -15,7 +15,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         Some(Commands::BuildProto {
             target_path,
             out_dir,
-        }) => proto::build_proto(&target_path, &out_dir),
+            include_dir,
+        }) => proto::build_proto(&target_path, &out_dir, &include_dir),
         Some(Commands::Start {}) => {
             let rt = tokio::runtime::Runtime::new()?;
             spawn_workers(rt)

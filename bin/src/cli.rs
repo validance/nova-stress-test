@@ -20,5 +20,8 @@ pub enum Commands {
 
         #[arg(short, long)]
         out_dir: String,
+
+        #[arg(short, long, action = clap::ArgAction::Append)]
+        include_dir: Vec<String>,
     },
 }
