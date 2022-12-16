@@ -34,3 +34,10 @@ impl Default for Config {
         toml::from_str(config_str.as_str()).expect("")
     }
 }
+
+impl Config {
+    pub fn new(config_dir: &str) -> Self {
+        let config_str = fs::read_to_string(config_dir).expect("config file not found");
+        toml::from_str(config_str.as_str()).expect("")
+    }
+}

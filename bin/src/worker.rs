@@ -32,11 +32,14 @@ fn spawn_task(
         *counter += 1;
         std::thread::sleep(Duration::from_millis(host_chain_config.interval))
     }
-    println!("next sequence: {counter}");
 }
 
-pub fn spawn_workers(rt: Runtime) {
-    let config = Config::default();
+pub fn spawn_workers(config_dir: Option<String>, rt: Runtime) {
+    let config = match config_dir {
+        Some(config_dir) => Config::new(&config_dir),
+        None => Config::default()
+    };
+
     let nova_chain_config = &config.nova;
 
     let nova_client = HttpClient::new(Url::from_str(&nova_chain_config.rpc).unwrap()).unwrap();
@@ -53,5 +56,7 @@ pub fn spawn_workers(rt: Runtime) {
             host_chain_config,
             &mut counter,
         );
-    })
+    });
+
+    println!("next sequence: {counter}");
 }

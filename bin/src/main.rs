@@ -13,13 +13,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     match cli.command {
         Some(Commands::BuildProto {
-            target_path,
-            out_dir,
-            include_dir,
-        }) => proto::build_proto(&target_path, &out_dir, &include_dir),
-        Some(Commands::Start {}) => {
+                 target_path,
+                 out_dir,
+                 include_dir,
+             }) => proto::build_proto(&target_path, &out_dir, &include_dir),
+        Some(Commands::Start { config }) => {
             let rt = tokio::runtime::Runtime::new()?;
-            spawn_workers(rt)
+            spawn_workers(config, rt)
         }
         None => {
             Cli::command().print_help().unwrap();

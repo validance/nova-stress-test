@@ -11,7 +11,11 @@ pub struct Cli {
 #[derive(Debug, Subcommand)]
 pub enum Commands {
     /// start stress test
-    Start {},
+    Start {
+        /// set config file
+        #[arg(short, long)]
+        config: Option<String>
+    },
 
     /// compile proto
     BuildProto {
