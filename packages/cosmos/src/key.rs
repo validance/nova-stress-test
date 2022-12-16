@@ -1,6 +1,6 @@
 use crate::Error;
 
-use crate::config::{HostChain, NovaChain};
+use crate::config::NovaChain;
 use bip39::{Language, Mnemonic, Seed};
 use cosmrs::bip32::DerivationPath;
 use cosmrs::crypto::secp256k1::SigningKey;

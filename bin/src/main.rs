@@ -7,7 +7,6 @@ mod worker;
 
 use clap::{CommandFactory, Parser};
 use std::process;
-use tokio;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let cli = Cli::parse();
