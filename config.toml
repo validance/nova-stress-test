@@ -4,7 +4,7 @@ prefix = "nova"
 denom = "unova"
 mnemonic = "reopen throw concert garment wash slab jump company habit father below stage float attitude achieve net charge bulb mouse mind fat net hello vague"
 account_number = 6
-sequence_number = 170
+sequence_number = 210
 rpc = "http://dev-supernova-l4.dev-supernova.xyz:26657"
 timeout_height = 10000000
 fee_amount = 100000
@@ -13,12 +13,12 @@ gas_limit = 1000000
 [[hosts]]
 id = "gaia"
 ibc_denom = "ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2"
-interval = 100
+interval = 5
 total_tx = 10
 
 [[hosts]]
 id = "juno"
 ibc_denom = "ibc/4CD525F166D32B0132C095F353F4C6F033B0FF5C49141470D1EFDA1D63303D04"
-interval = 100
+interval = 5
 total_tx = 10
 

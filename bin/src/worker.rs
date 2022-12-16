@@ -11,7 +11,9 @@ fn spawn_task(
     account: &Account,
     nova_chain_config: &NovaChain,
     host_chain_config: &HostChain,
-    counter: &mut u64,
+    sequence_number: &mut u64,
+    total_tx: u64,
+    tx_number: &mut u64,
 ) {
     for _ in 0..host_chain_config.total_tx {
         let deposit_task = nova::tx::deposit(
@@ -19,15 +21,16 @@ fn spawn_task(
             account,
             host_chain_config,
             nova_chain_config,
-            *counter,
+            *sequence_number,
             account.get_account_id().unwrap().to_string(),
             account.get_account_id().unwrap().to_string(),
             "1",
         );
         let res = rt.block_on(deposit_task).unwrap();
-        println!("{}: {}", &host_chain_config.id, res.hash);
+        println!("{}: {} {}/{}", &host_chain_config.id, res.hash, tx_number, total_tx);
 
-        *counter += 1;
+        *sequence_number += 1;
+        *tx_number += 1;
         std::thread::sleep(Duration::from_millis(host_chain_config.interval))
     }
 }
@@ -40,10 +43,13 @@ pub fn spawn_workers(config_dir: Option<String>, rt: Runtime) {
 
     let nova_chain_config = &config.nova;
 
+    let total_tx: u64 = config.hosts.iter().map(|c| c.total_tx).sum();
+    let mut tx_number: u64 = 1;
+
     let nova_client = HttpClient::new(Url::from_str(&nova_chain_config.rpc).unwrap()).unwrap();
     let account = Account::new(nova_chain_config).unwrap();
 
-    let mut counter = nova_chain_config.sequence_number;
+    let mut sequence_number = nova_chain_config.sequence_number;
 
     config.hosts.iter().for_each(|host_chain_config| {
         spawn_task(
@@ -52,9 +58,11 @@ pub fn spawn_workers(config_dir: Option<String>, rt: Runtime) {
             &account,
             nova_chain_config,
             host_chain_config,
-            &mut counter,
+            &mut sequence_number,
+            total_tx,
+            &mut tx_number
         );
     });
 
-    println!("next sequence: {counter}");
+    println!("next sequence: {sequence_number}");
 }
