@@ -3,38 +3,42 @@ id = "nova"
 prefix = "nova"
 denom = "unova"
 mnemonic = "reopen throw concert garment wash slab jump company habit father below stage float attitude achieve net charge bulb mouse mind fat net hello vague"
-rpc = "http://dev-supernova-l4.dev-supernova.xyz:26657"
-rest = "https://dev-supernova-rest.dev-supernova.xyz"
-timeout_height = 10000000
+rpc = [
+    "http://nova-validator1-l4.dev-supernova.xyz:26657",
+    "http://nova-validator2-l4.dev-supernova.xyz:26657",
+    "http://nova-validator3-l4.dev-supernova.xyz:26657",
+]
+rest = "https://supernova-rest.dev-supernova.xyz"
+timeout_height = 100000000
 fee_amount = 100000
 gas_limit = 1000000
 
 [[hosts]]
 id = "gaia"
-ibc_denom = "ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2"
+ibc_denom = "ibc/C4CFF46FD6DE35CA4CF4CE031E643C8FDC9BA4B99AE598E9B0ED98FE3A2319F9"
 sn_denom = "snuatom"
-interval = 5
+interval = 50
 num_per_tx = 10
 transfer_source_port = "transfer"
-transfer_channel = "channel-0"
+transfer_channel = "channel-1"
 host_address = "cosmos1tur97kug0h2dpucphdcdd68why3sznrs49vps7gsp7c0vh2ztjpqzu0fdk"
 
 [[hosts]]
 id = "osmosis"
-ibc_denom = "ibc/0471F1C4E7AFD3F07702BEF6DC365268D64570F7C1FDC98EA6098DD6DE59817B"
+ibc_denom = "ibc/13B2C536BB057AC79D5616B8EA1B9540EC1F2170718CAFF6F0083C966FFFED0B"
 sn_denom = "snuosmo"
-interval = 5
-num_per_tx = 10
-transfer_source_port = "transfer"
-transfer_channel = "channel-1"
-host_address = "osmo1x02sc9cjhnf9vf8umjs2j6q0d3w0c06weh9jmu22npwfd2g7hzgqxc8swk"
-
-[[hosts]]
-id = "juno"
-ibc_denom = "ibc/4CD525F166D32B0132C095F353F4C6F033B0FF5C49141470D1EFDA1D63303D04"
-sn_denom = "snujuno"
-interval = 5
+interval = 50
 num_per_tx = 10
 transfer_source_port = "transfer"
 transfer_channel = "channel-2"
+host_address = "osmo1ffeh7cefql8aytcxjr7jqzmxud4frmke96vcyrdk3mt7lm0ceekq6lrdqg"
+
+[[hosts]]
+id = "juno"
+ibc_denom = "ibc/04F5F501207C3626A2C14BFEF654D51C2E0B8F7CA578AB8ED272A66FE4E48097"
+sn_denom = "snujuno"
+interval = 50
+num_per_tx = 10
+transfer_source_port = "transfer"
+transfer_channel = "channel-0"
 host_address = "juno1pfjh0tsznyqc8v8gtf0nr9whqkf40vklyc3s75pwneltcj3nlmhqu8x07f"

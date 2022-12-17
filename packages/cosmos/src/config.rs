@@ -14,7 +14,7 @@ pub struct NovaChain {
     pub prefix: String,
     pub denom: String,
     pub mnemonic: String,
-    pub rpc: String,
+    pub rpc: Vec<String>,
     pub rest: String,
     pub timeout_height: u32,
     pub fee_amount: u64,

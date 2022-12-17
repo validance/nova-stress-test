@@ -110,7 +110,12 @@ pub fn spawn_workers(config_dir: Option<String>, rt: Runtime) {
     let total_tx: u64 = config.hosts.iter().map(|c| c.num_per_tx).sum();
     let mut tx_number: u64 = 1;
 
-    let nova_client = HttpClient::new(Url::from_str(&nova_chain_config.rpc).unwrap()).unwrap();
+    let nova_clients = nova_chain_config
+        .rpc
+        .iter()
+        .map(|rpc| HttpClient::new(Url::from_str(rpc).unwrap()).unwrap())
+        .collect::<Vec<HttpClient>>();
+
     let mut account = Account::new(nova_chain_config).unwrap();
 
     let account_numbers = rt
@@ -123,7 +128,9 @@ pub fn spawn_workers(config_dir: Option<String>, rt: Runtime) {
     config.hosts.iter().for_each(|host_chain_config| {
         spawn_task(
             &rt,
-            &nova_client,
+            nova_clients
+                .get(sequence_number as usize % nova_clients.len())
+                .unwrap(),
             &account,
             nova_chain_config,
             host_chain_config,
