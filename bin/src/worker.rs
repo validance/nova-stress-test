@@ -129,7 +129,7 @@ pub fn spawn_workers(config_dir: Option<String>, rt: Runtime) {
         spawn_task(
             &rt,
             nova_clients
-                .get(sequence_number as usize % nova_clients.len())
+                .get(tx_number as usize % nova_clients.len())
                 .unwrap(),
             &account,
             nova_chain_config,
@@ -139,6 +139,4 @@ pub fn spawn_workers(config_dir: Option<String>, rt: Runtime) {
             &mut tx_number,
         );
     });
-
-    println!("next sequence: {sequence_number}");
 }
